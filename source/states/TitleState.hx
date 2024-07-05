@@ -68,6 +68,8 @@ class TitleState extends MusicBeatState
 
 	public static var updateVersion:String = '';
 
+	var rip:Float;
+
 	override public function create():Void
 	{
 		Paths.clearStoredMemory();
@@ -82,6 +84,8 @@ class TitleState extends MusicBeatState
 		FlxG.keys.preventDefaultKeys = [TAB];
 
 		curWacky = FlxG.random.getObject(getIntroTextShit());
+
+		rip = FlxG.random.int(1, 2);
 
 		super.create();
 
@@ -117,22 +121,6 @@ class TitleState extends MusicBeatState
 
 		// IGNORE THIS!!!
 		titleJSON = tjson.TJSON.parse(Paths.getTextFromFile('images/gfDanceTitle.json'));
-
-		#if TITLE_SCREEN_EASTER_EGG
-		if (FlxG.save.data.psychDevsEasterEgg == null) FlxG.save.data.psychDevsEasterEgg = ''; //Crash prevention
-		switch(FlxG.save.data.psychDevsEasterEgg.toUpperCase())
-		{
-			case 'SHADOW':
-				titleJSON.gfx += 210;
-				titleJSON.gfy += 40;
-			case 'RIVER':
-				titleJSON.gfx += 180;
-				titleJSON.gfy += 40;
-			case 'BBPANZU':
-				titleJSON.gfx += 45;
-				titleJSON.gfy += 100;
-		}
-		#end
 
 		if(!initialized)
 		{
@@ -206,7 +194,10 @@ class TitleState extends MusicBeatState
 		add(bg);
 
 		logoBl = new FlxSprite(titleJSON.titlex, titleJSON.titley);
-		logoBl.frames = Paths.getSparrowAtlas('logoBumpin');
+		if (rip == 1){
+			logoBl.frames = Paths.getSparrowAtlas('titlescreen/JSRlogoBumpin');}
+		if (rip == 2){
+			logoBl.frames = Paths.getSparrowAtlas('titlescreen/PTlogoBumpin');}
 		logoBl.antialiasing = ClientPrefs.data.antialiasing;
 
 		logoBl.animation.addByPrefix('bump', 'logo bumpin', 24, false);
@@ -545,7 +536,14 @@ class TitleState extends MusicBeatState
 			{
 				case 1:
 					//FlxG.sound.music.stop();
-					FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
+					if (rip == 1)
+						{
+						FlxG.sound.playMusic(Paths.music('freakyMenu/JSRfreakyMenu'), 0);
+						}
+					if (rip == 2)
+						{
+						FlxG.sound.playMusic(Paths.music('freakyMenu/PTfreakyMenu'), 0);
+						}
 					FlxG.sound.music.fadeIn(4, 0, 0.7);
 				case 2:
 					#if PSYCH_WATERMARKS
