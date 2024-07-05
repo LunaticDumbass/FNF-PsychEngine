@@ -12,6 +12,8 @@ class MainMenuState extends MusicBeatState
 	public static var psychEngineVersion:String = '0.7.3'; // This is also used for Discord RPC
 	public static var curSelected:Int = 0;
 
+	public static var ripstarted:Bool = false;
+
 	var menuItems:FlxTypedGroup<FlxSprite>;
 
 	var optionShit:Array<String> = [
@@ -34,11 +36,14 @@ class MainMenuState extends MusicBeatState
 		#end
 		Mods.loadTopMod();
 
+
 		#if DISCORD_ALLOWED
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Menus", null);
 		#end
 
+		ripstarted = true;
+		
 		transIn = FlxTransitionableState.defaultTransIn;
 		transOut = FlxTransitionableState.defaultTransOut;
 
